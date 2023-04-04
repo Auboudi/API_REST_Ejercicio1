@@ -167,11 +167,12 @@ public class ClienteController {
 
             FileUploadResponse fileUploadResponse = FileUploadResponse.builder()
                     .filename(fileCode + "-" + file.getOriginalFilename())
-                    .downloadURI("/productos/downloadFile/" + fileCode + "-" + file.getOriginalFilename())
+                    .downloadURI("/clientes/downloadFile/" + fileCode + "-" + file.getOriginalFilename())
                     .size(file.getSize())
                     .build();
             responseAsMap.put("info de la imagen", fileUploadResponse);
         }
+
         Cliente clienteDB = clienteService.save(cliente);
 
         try {
@@ -222,7 +223,7 @@ public class ClienteController {
             @RequestPart(name = "mascotas") List<Mascota> mascotas,
             BindingResult result,
             @RequestPart(name = "file") MultipartFile file,
-            @PathVariable(name = "id") Integer id) {
+            @PathVariable(name = "id") Integer id) throws IOException {
 
         Map<String, Object> responseAsMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity = null;
@@ -246,6 +247,23 @@ public class ClienteController {
 
             return responseEntity;
 
+        }
+        // Si no hay errores ,se actualiza si previamente nos han enviado una imagen
+
+        if (!file.isEmpty()) {
+
+            String fileCode = fileUploadUtil.saveFile(file.getOriginalFilename(), file);
+            
+            cliente.setImagenMascota(fileCode + "-" + file.getOriginalFilename());
+
+            // Devolver informacion respecto al cliente recibido
+
+            FileUploadResponse fileUploadResponse = FileUploadResponse.builder()
+                    .filename(fileCode + "-" + file.getOriginalFilename())
+                    .downloadURI("/clientes/downloadFile/" + fileCode + "-" + file.getOriginalFilename())
+                    .size(file.getSize())
+                    .build();
+            responseAsMap.put("info de la imagen", fileUploadResponse);
         }
 
         // Si no hay errores
