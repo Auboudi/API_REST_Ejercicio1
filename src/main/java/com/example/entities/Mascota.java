@@ -58,7 +58,7 @@ public class Mascota implements Serializable {
         
     }
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JsonIgnore
     @JsonManagedReference
     private Cliente cliente;
