@@ -3,8 +3,13 @@ package com.example.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,10 +45,11 @@ public class Mascota implements Serializable {
     private String raza;
 
 
-    @NotEmpty(message = "El campo <genero> no puede estar vacío")
+    // @NotEmpty(message = "El campo <genero> no puede estar vacío")
+    @Enumerated(EnumType.STRING)
     private Genero genero;
 
-    @NotEmpty(message = "El campo <fecha de nacimiento> no puede estar vacío")
+
     private LocalDate fechaDeNacimiento;
 
 
@@ -52,8 +58,9 @@ public class Mascota implements Serializable {
         
     }
 
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JsonIgnore
+    @JsonManagedReference
     private Cliente cliente;
 
     

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.dao.ClienteDao;
 import com.example.entities.Cliente;
@@ -34,11 +35,13 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional
     public Cliente save(Cliente cliente) {
         return clienteDao.save(cliente);
     }
 
     @Override
+    @Transactional
     public void delete(Cliente cliente) {
         clienteDao.delete(cliente);
     }

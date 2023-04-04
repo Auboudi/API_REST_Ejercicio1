@@ -12,7 +12,7 @@ import com.example.entities.Cliente;
 
 public interface ClienteDao extends JpaRepository<Cliente, Long> {
 
-    @Query(value = "select c from Cliente c left join fetch c.hotel left join fetch c.mascota")
+    @Query(value = "select c from Cliente c inner join fetch c.hotel left join fetch c.mascota")
     public List<Cliente> findAll(Sort sort);
 
     @Query(value = "select c from Cliente c left join fetch c.hotel left join fetch c.mascota" ,
